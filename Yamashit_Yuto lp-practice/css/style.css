@@ -22,29 +22,35 @@
 
 /* ヘッダーのスタイル */
 header {
+    padding: 15px 0px;
     background-color: #fff;
+}
+
+.header-inner{
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 15px 0px;
+    align-items: center;
 }
 
 .header-left{
     color:#777;
-    margin:0px 75px;
+    padding-left:40px;
 }
 
+.header-right{
+    padding-right:40px;
+}
 
-.header-right {
+.contact-btn {
+    display: inline-block;
     color: #fff;
     background-color: #6ba7eb;
     padding: 10px 15px;
-    margin:0px 60px;
     font-size:12px;
     transition: background-color 0.3s ease;
 }
 
-.header-right:hover{
+.contact-btn:hover{
     background-color:#333;
 }
 
@@ -75,9 +81,10 @@ h1{
     padding:50px 0px 0px 0px;
 }
 
-.news{
-    display:flex;
+.news-inner{
+    display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .news-icon{
