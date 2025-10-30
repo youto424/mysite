@@ -1,0 +1,38 @@
+p {
+  text-align: center;
+}
+
+.boxes-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 120vh;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  background-color: #333;
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.box-02.displayed {
+  animation-delay: 0.3s;
+}
+
+/* このクラスが要素に付与されるとアニメーションが動く */
+.displayed {
+  animation: fadeUp 1s forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-100px);
+  }
+}
