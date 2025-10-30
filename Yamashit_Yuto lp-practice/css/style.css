@@ -251,8 +251,16 @@ footer{
   }
 
   .news-icon , .news-content {
-    width: 100%;
     margin-right: 0;
+  }
+
+  .news-content {
+    width: 100%;
+  }
+
+  .news-icon {
+    width: auto;
+    height: auto;
   }
 
   .skill-icon {
@@ -265,7 +273,7 @@ footer{
     margin: 0;
   }
 
-  .skill-icon > a:nth-child(4n - 1) {
+  .skill-icon > a:nth-child(3n) {
     margin-bottom: 80px;
   }
 }
@@ -312,7 +320,7 @@ footer{
     font-size: 30px;
   }
 
-  .skill-icon > a:nth-child(4n - 1) {
+  .skill-icon > a:nth-child(3n) {
     margin-bottom: 60px;
   }
 
