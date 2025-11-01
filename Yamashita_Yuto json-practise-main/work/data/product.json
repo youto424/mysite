@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "商品A",
+    "price": 1000,
+    "description": "これは商品Aの説明です。"
+  },
+  {
+    "id": 2,
+    "name": "商品B",
+    "price": 1500,
+    "description": "これは商品Bの説明です。"
+  },
+  {
+    "id": 3,
+    "name": "商品C",
+    "price": 2000,
+    "description": "これは商品Cの説明です。"
+  },
+  {
+    "id": 4,
+    "name": "商品D",
+    "price": 2500,
+    "description": "これは商品Dの説明です。"
+  },
+  {
+    "id": 5,
+    "name": "商品E",
+    "price": 3000,
+    "description": "これは商品Eの説明です。"
+  },
+  {
+    "id": 6,
+    "name": "商品F",
+    "price": 3500,
+    "description": "これは商品Fの説明です。"
+  },
+  {
+    "id": 7,
+    "name": "商品G",
+    "price": 4000,
+    "description": "これは商品Gの説明です。"
+  },
+  {
+    "id": 8,
+    "name": "商品H",
+    "price": 4500,
+    "description": "これは商品Hの説明です。"
+  },
+  {
+    "id": 9,
+    "name": "商品I",
+    "price": 5000,
+    "description": "これは商品Iの説明です。"
+  },
+  {
+    "id": 10,
+    "name": "商品J",
+    "price": 5500,
+    "description": "これは商品Jの説明です。"
+  }
+]
