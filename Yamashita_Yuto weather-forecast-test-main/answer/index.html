@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>天気予報アプリ</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="weather-app">
+      <h1>天気予報アプリ</h1>
+      <select id="city-select">
+        <option value="">都市を選択してください</option>
+        <option value="011000">北海道（宗谷地方）</option>
+        <option value="130000">東京都</option>
+        <option value="230000">愛知県</option>
+        <option value="270000">大阪府</option>
+      </select>
+      <button id="get-weather">天気を取得</button>
+      <table>
+        <tr id="publishingOffice">
+          <th>発表者</th>
+          <td></td>
+        </tr>
+        <tr id="reportDatetime">
+          <th>報告日時</th>
+          <td></td>
+        </tr>
+        <tr id="targetArea">
+          <th>対象地域</th>
+          <td></td>
+        </tr>
+        <tr id="todayHighTemperature">
+          <th>今日の最高気温</th>
+          <td></td>
+        </tr>
+        <tr id="todayLowTemperature">
+          <th>今日の最低気温</th>
+          <td></td>
+        </tr>
+        <tr id="today">
+          <th>今日の天気</th>
+          <td></td>
+        </tr>
+        <tr id="tomorrow">
+          <th>明日の天気</th>
+          <td></td>
+        </tr>
+        <tr id="dayAfterTomorrow">
+          <th>明後日の天気</th>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
+</html>
