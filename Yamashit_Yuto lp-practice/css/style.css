@@ -1,5 +1,70 @@
 @charset "utf-8";
 
+#loading {
+    /* 画面全体を覆う */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* 半透明の背景 */
+    background: rgba(255, 255, 255, 0.9);
+
+    /* スピナーとテキストを中央揃え（Flexbox） */
+    display: flex;
+    flex-direction: column; /* 縦積みにする */
+    justify-content: center;
+    align-items: center;
+
+    /* 他の要素より手前に表示 */
+    z-index: 9999;
+
+    /* デフォルトでは表示 */
+    opacity: 1;
+    visibility: visible;
+    
+    /* 非表示時のアニメーション設定 */
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+/* JavaScriptでこのクラスを追加して非表示にする */
+#loading.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* スピナー本体 */
+.loader {
+    border: 8px solid #f3f3f3; /* 薄いグレーの円 */
+    border-top: 8px solid #3498db; /* 青色の部分 */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite; /* 1.5秒で1回転 */
+}
+
+/* "Loading..." のテキスト */
+#loading p {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+    font-family: sans-serif;
+}
+
+/* スピナーの回転アニメーション */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* --- ページのコンテンツ（サンプル） --- */
+.content {
+    padding: 20px;
+    font-family: sans-serif;
+}
+
 .inner {
   /* TAB・SPでのスタイル（デフォルト） */
   width: 97%;
@@ -220,6 +285,9 @@ h1{
     font-size:40px;
     text-align:center;
     transition: background-color 0.5s ease;
+
+    display: inline-block;
+    transition: transform 0.4s ease-in-out;
 }
 
 .sns-icon i:hover{
@@ -235,6 +303,8 @@ footer{
     font-size:13px;
     letter-spacing:0.5px;
 }
+
+
 
 /*TABスタイル (max-width: 1199px) */
 @media (max-width: 1199px) {
