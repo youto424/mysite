@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoアプリ</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { color: #333; font-size: 24px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        
+        /* ボタンエリアのスタイル */
+        .button-area { 
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .button-area a:last-child {
+            margin-left: auto;
+        }
+        button { padding: 10px 20px; cursor: pointer; }
+
+        /* 完了済み行のスタイル */
+        .completed-row {
+            background-color: #e9ecef;
+            color: #aaa;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>みんなのタスクボード</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>番号</th>
+                <th>ユーザー</th>
+                <th>期限</th>
+                <th>タスク内容</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="task : ${tasks}" 
+                th:classappend="${task.isCompleted ? 'completed-row' : ''}">
+                
+                <td th:text="${task.id}">1</td>
+                <td th:text="${task.user}">山田太郎</td>
+                <td th:text="${task.deadline}">2025-12-31</td>
+                <td th:text="${task.content}">牛乳を買う</td>
+                
+                <td style="display: flex; gap: 5px;">
+                    <form th:unless="${task.isCompleted}" th:action="@{/complete}" method="post">
+                        <input type="hidden" name="id" th:value="${task.id}" />
+                        <button type="submit" style="background-color: #28a745; color: white; padding: 5px 10px; font-size: 12px; border:none; border-radius:3px;">完了</button>
+                    </form>
+
+                    <form th:action="@{/delete}" method="post">
+                        <input type="hidden" name="id" th:value="${task.id}" />
+                        <button type="submit" style="background-color: #dc3545; color: white; padding: 5px 10px; font-size: 12px; border:none; border-radius:3px;">削除</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-area">
+        <a href="/?mode=today">
+            <button>今日のタスクのみ表示</button>
+        </a>
+
+        <a href="/?mode=sort">
+            <button>期限が短い順でソート</button>
+        </a>
+        
+        <a href="/">
+             <button style="background-color: lightgray;">リスト一覧</button>
+        </a>
+
+        <a href="/add" style="margin-left: auto;">
+            <button>タスク追加</button>
+        </a>
+    </div>
+
+</body>
+</html>
