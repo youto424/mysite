@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>4択クイズプレイ</title>
+    <style>
+        .question-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            max-width: 600px; /* 横幅が広がりすぎないように */
+        }
+        .q-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 5px;
+        }
+        
+        /* 選択肢をブロック状にして押しやすくする */
+        .choice-block {
+            display: block;          /* 横いっぱいに広げる */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px 15px;      /* 中の余白を広めに */
+            margin-bottom: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .choice-block:hover {
+            background-color: #e6f2ff; /* マウスを乗せた時の色 */
+        }
+        
+        /* ラジオボタン本体の見た目調整 */
+        input[type="radio"] {
+            transform: scale(1.2);
+            margin-right: 10px;
+        }
+        
+        /* 送信ボタンのデザイン */
+        .submit-btn {
+            margin-top: 10px;
+            padding: 10px 30px; 
+            font-size: 1.2em; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>4択クイズ</h1>
+    
+    <p th:if="${msg}" th:text="${msg}" style="color:red;"></p>
+
+    <div th:if="${quizChoiceForm != null}">
+        <div class="question-card">
+            <h2 style="margin-top: 0;">
+                <span class="q-number">Q.</span>
+                <span th:text="${quizChoiceForm.question}">ここに問題が出ます</span>
+            </h2>
+            
+            <form method="post" th:action="@{/quiz/choice/check}">
+                <input type="hidden" name="id" th:value="${quizChoiceForm.id}">
+                
+                <label class="choice-block">
+                    <input type="radio" name="answer" value="1" required>
+                    <span th:text="${quizChoiceForm.choice1}">選択肢1</span>
+                </label>
+                
+                <label class="choice-block">
+                    <input type="radio" name="answer" value="2">
+                    <span th:text="${quizChoiceForm.choice2}">選択肢2</span>
+                </label>
+                
+                <label class="choice-block">
+                    <input type="radio" name="answer" value="3">
+                    <span th:text="${quizChoiceForm.choice3}">選択肢3</span>
+                </label>
+                
+                <label class="choice-block">
+                    <input type="radio" name="answer" value="4">
+                    <span th:text="${quizChoiceForm.choice4}">選択肢4</span>
+                </label>
+
+                <button type="submit" class="submit-btn">回答する</button>
+            </form>
+        </div>
+    </div>
+
+    <br>
+</body>
+</html>

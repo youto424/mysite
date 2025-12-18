@@ -1,6 +1,9 @@
 package com.example.quiz.service;
 
+import java.io.IOException;
 import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.quiz.entity.Quiz;
 
@@ -20,4 +23,8 @@ public interface QuizService {
 	void updateQuiz(Quiz quiz);
 	/** クイズを削除します */
 	void deleteQuizById(Integer id);
+	/** CSVインポート機能  */
+    void importCsv(MultipartFile file) throws IOException;
+    /** クイズをランダムで複数件取得 */
+    Iterable<Quiz> selectRandomQuizzes(Integer limit);
 }

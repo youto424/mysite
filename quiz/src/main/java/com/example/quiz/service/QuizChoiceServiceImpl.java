@@ -11,83 +11,101 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.quiz.entity.Quiz;
-import com.example.quiz.repository.QuizRepository;
+import com.example.quiz.entity.QuizChoice;
+import com.example.quiz.repository.QuizChoiceRepository;
 
 @Service
 @Transactional
-public class QuizServiceImpl implements QuizService {
+public class QuizChoiceServiceImpl implements QuizChoiceService {
+
 	/** Repository：注入 */
 	@Autowired
-	QuizRepository repository;
+	QuizChoiceRepository repository;
+
 	@Override
-	public Iterable<Quiz> selectAll() {
+	public Iterable<QuizChoice> selectAll() {
 		return repository.findAll();
 	}
+
 	@Override
-	public Optional<Quiz> selectOneById(Integer id) {
+	public Optional<QuizChoice> selectOneById(Integer id) {
 		return repository.findById(id);
 	}
+
 	@Override
-	public Optional<Quiz> selectOneRandomQuiz() {
+	public Optional<QuizChoice> selectOneRandomQuiz() {
 		// ランダムでidの値を取得する
 		Integer randId = repository.getRandomId();
 		// 問題がない場合
 		if (randId == null) {
 			// 空のOptionalインスタンスを返します。
 			return Optional.empty();
-			
 		}
 		return repository.findById(randId);
 	}
+
 	@Override
-	public Boolean checkQuiz(Integer id, Boolean myAnswer) {
-		// クイズの正解/不正解を判定用変数
+	public Boolean checkQuiz(Integer id, Integer myAnswer) {
 		Boolean check = false;
 		// 対象のクイズを取得
-		Optional<Quiz> optQuiz = repository.findById(id);
+		Optional<QuizChoice> optQuiz = repository.findById(id);
+		
 		// 値存在チェック
 		if (optQuiz.isPresent()) {
-			Quiz quiz = optQuiz.get();
-			// クイズの解答チェック
-			if(quiz.getAnswer().equals(myAnswer)) {
+			QuizChoice quiz = optQuiz.get();
+			// クイズの解答チェック (数値同士の比較)
+			if (quiz.getAnswer().equals(myAnswer)) {
 				check = true;
 			}
 		}
 		return check;
 	}
-	@Override
-	public void insertQuiz(Quiz quiz) {
-		repository.save(quiz);
 
-	}
 	@Override
-	public void updateQuiz(Quiz quiz) {
+	public void insertQuiz(QuizChoice quiz) {
 		repository.save(quiz);
 	}
+
+	@Override
+	public void updateQuiz(QuizChoice quiz) {
+		repository.save(quiz);
+	}
+
 	@Override
 	public void deleteQuizById(Integer id) {
 		repository.deleteById(id);
 	}
-	/** CSVインポート機能 */
+	
+	/**
+     * CSVファイルを読み込み、DBに保存する
+     */
     @Override
     public void importCsv(MultipartFile file) throws IOException {
+        // ファイルの中身を読み込むための準備 (文字コードはUTF-8)
         try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
             String line;
+            // 1行ずつ読み込む
             while ((line = br.readLine()) != null) {
-                // CSV形式: 問題文,正解(true/false),作成者
+                // カンマで区切って配列にする
+                // CSV形式: 問題文,選択肢1,選択肢2,選択肢3,選択肢4,正解番号,作成者
                 String[] split = line.split(",");
 
-                if (split.length < 3) {
+                // データが足りない行はスキップ（エラー回避）
+                if (split.length < 7) {
                     continue; 
                 }
 
-                Quiz quiz = new Quiz();
+                // Entityにセットする
+                QuizChoice quiz = new QuizChoice();
                 quiz.setQuestion(split[0]);
-                // 文字列の "true"/"false" をBoolean型に変換
-                quiz.setAnswer(Boolean.valueOf(split[1])); 
-                quiz.setAuthor(split[2]);
+                quiz.setChoice1(split[1]);
+                quiz.setChoice2(split[2]);
+                quiz.setChoice3(split[3]);
+                quiz.setChoice4(split[4]);
+                quiz.setAnswer(Integer.parseInt(split[5])); // 数値に変換
+                quiz.setAuthor(split[6]);
 
+                // 保存
                 repository.save(quiz);
             }
         } catch (IOException e) {
@@ -95,11 +113,8 @@ public class QuizServiceImpl implements QuizService {
             throw new RuntimeException("CSVの読み込みに失敗しました", e);
         }
     }
-
-    /** ランダムで複数件取得 */
     @Override
-    public Iterable<Quiz> selectRandomQuizzes(Integer limit) {
-        return repository.getRandomQuizzes(limit);
+    public Iterable<QuizChoice> selectRandomQuizzes(Integer limit) {
+    		return repository.getRandomQuizzes(limit);
     }
-
 }

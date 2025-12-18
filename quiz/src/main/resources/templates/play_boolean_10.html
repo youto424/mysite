@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>◯×クイズ：10問連続モード</title>
+    <style>
+        .question-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            max-width: 600px;
+        }
+        .q-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        /* ▼▼▼ ボタン風ラジオボタンのスタイル ▼▼▼ */
+        .choice-label {
+            display: inline-block;
+            width: 100px;          /* 幅固定 */
+            height: 50px;          /* 高さ固定 */
+            line-height: 50px;     /* 文字を垂直方向の真ん中に */
+            text-align: center;
+            border: 1px solid #999;
+            border-radius: 5px;
+            background-color: #fff;
+            margin-right: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.2s;
+        }
+        
+        /* マウスを乗せた時 */
+        .choice-label:hover {
+            background-color: #e6f2ff;
+        }
+        
+        /* 選択されているラジオボタンを含むラベルの色を変える（オマケ機能） */
+        /* ※CSSだけで完璧に連動させるのは少し複雑なので、今回は「カーソルポインター」でボタン感を出す形にとどめています */
+        
+        /* ラジオボタン本体は少し邪魔なので、ラベルの中で小さく表示するか、好みで消してもOK */
+        input[type="radio"] {
+            transform: scale(1.2); /* 少し大きく */
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥10問連続チャレンジ🔥</h1>
+	<p>全問正解目指して頑張ってください！</p>
+    <form method="post" th:action="@{/quiz/check10}" th:object="${quizBooleanPlayForm}">
+        
+        <div th:each="quizItem, stat : *{quizList}" class="question-card">
+            
+            <input type="hidden" th:field="*{quizList[__${stat.index}__].id}">
+            <input type="hidden" th:field="*{quizList[__${stat.index}__].answer}">
+            
+            <p>
+                <span class="q-number" th:text="'Q' + ${stat.count}">Q1</span>
+                <span th:text="${quizItem.question}">問題文</span>
+            </p>
+
+            <div>
+                <label class="choice-label" style="color: blue;">
+                    <input type="radio" value="true" th:field="*{quizList[__${stat.index}__].myAnswer}" required>
+                    ⭕
+                </label>
+                
+                <label class="choice-label" style="color: red;">
+                    <input type="radio" value="false" th:field="*{quizList[__${stat.index}__].myAnswer}">
+                    ❌
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" style="padding: 10px 30px; font-size: 1.2em; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            採点する！
+        </button>
+    </form>
+    <br>
+</body>
+</html>

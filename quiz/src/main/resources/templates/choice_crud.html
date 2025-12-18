@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>「4択クイズ」</title>
+    <style>
+        /* エラーメッセージ用 */
+        .error { color: red; }
+        
+        /* テーブル（表）のデザイン */
+        table {
+            width: 100%;              /* 横幅いっぱいにする */
+            border-collapse: collapse; /* 枠線を一本にする */
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #666;   /* 濃い灰色の枠線 */
+            padding: 8px;             /* セル内の余白 */
+            text-align: center;       /* 文字を真ん中寄せ */
+        }
+        th {
+            background-color: #e0e0e0; /* ヘッダーの背景色（薄いグレー） */
+            font-weight: bold;
+        }
+        /* 入力エリアの背景など */
+        .input-area {
+            background-color: #eef;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+    </head>
+<body>
+	<p>
+	    <a th:href="@{/quiz}">← ◯×クイズへ移動</a>
+	</p>
+    <h1>「4択クイズ」</h1>
+	<h3><a th:href="@{/quiz/choice/play}">🔰1問プレイ🔰</a></h3>
+	<h3><a th:href="@{/quiz/choice/play10}">🔥10問連続プレイ🔥</a></h3>
+    
+    <div class="input-area">
+        <h3 th:text="${title}">登録用フォーム</h3>
+        
+        <form method="post" th:action="${quizChoiceForm.newQuiz} ? @{/quiz/choice/insert} : @{/quiz/choice/update}" th:object="${quizChoiceForm}">
+            
+            <input type="hidden" th:field="*{id}">
+
+            <p>
+                <label>問題文：</label><br>
+                <textarea rows="3" cols="50" th:field="*{question}"></textarea>
+                <div th:if="${#fields.hasErrors('question')}" th:errors="*{question}" class="error"></div>
+            </p>
+
+            <p>選択肢を入力し、正解の番号を選んでください：</p>
+            <div>
+                <input type="radio" value="1" th:field="*{answer}">
+                <label>選択肢1：</label> <input type="text" th:field="*{choice1}">
+                <div th:if="${#fields.hasErrors('choice1')}" th:errors="*{choice1}" class="error"></div>
+            </div>
+            <div>
+                <input type="radio" value="2" th:field="*{answer}">
+                <label>選択肢2：</label> <input type="text" th:field="*{choice2}">
+                <div th:if="${#fields.hasErrors('choice2')}" th:errors="*{choice2}" class="error"></div>
+            </div>
+            <div>
+                <input type="radio" value="3" th:field="*{answer}">
+                <label>選択肢3：</label> <input type="text" th:field="*{choice3}">
+                <div th:if="${#fields.hasErrors('choice3')}" th:errors="*{choice3}" class="error"></div>
+            </div>
+            <div>
+                <input type="radio" value="4" th:field="*{answer}">
+                <label>選択肢4：</label> <input type="text" th:field="*{choice4}">
+                <div th:if="${#fields.hasErrors('choice4')}" th:errors="*{choice4}" class="error"></div>
+            </div>
+            <div th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}" class="error"></div>
+
+            <p>
+                <label>作成者：</label><br>
+                <input type="text" th:field="*{author}">
+                <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="error"></div>
+            </p>
+            <input type="submit" value="送信">
+            <a th:href="@{/quiz/choice}" th:if="${!quizChoiceForm.newQuiz}">キャンセル</a>
+        </form>
+        
+        <p th:if="${complete}" th:text="${complete}" style="color:blue"></p>
+        <p th:if="${delcomplete}" th:text="${delcomplete}" style="color:blue"></p>
+    </div>
+
+    <div th:if="${quizChoiceForm.newQuiz}">
+		<div style="background-color: #f9f9f9; padding: 15px; border: 1px solid #ddd; margin: 20px 0;">
+		    <h3>📥 クイズ一括登録</h3>
+		    <p>カンマ区切りのCSVファイルを選択してください。</p>
+		    
+		    <form method="post" th:action="@{/quiz/choice/csv}" enctype="multipart/form-data">
+		        <input type="file" name="file" accept=".csv" required>
+		        <button type="submit">アップロード実行</button>
+		    </form>
+		</div>
+        
+        <h2>登録済みクイズ一覧</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>問題</th>
+                <th>正解番号</th>
+                <th>作成者</th>
+                <th>編集</th>
+                <th>削除</th>
+            </tr>
+            <tr th:each="obj : ${list}">
+                <td th:text="${obj.id}"></td>
+                <td th:text="${obj.question}" style="text-align: left;"></td>
+                <td th:text="${obj.answer}"></td>
+                <td th:text="${obj.author}"></td>
+                <td>
+                    <a th:href="@{/quiz/choice/{id}(id=${obj.id})}">編集</a>
+                </td>
+                <td>
+                    <form method="post" th:action="@{/quiz/choice/delete}">
+                        <input type="hidden" name="id" th:value="${obj.id}">
+                        <button type="submit">削除</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>結果発表</title>
+</head>
+<body>
+    <h1>🏆 結果発表 🏆</h1>
+    <h2>
+        あなたの成績は・・・<br>
+        <span style="font-size: 2em; color: red;" th:text="${correctCount}">0</span> 問 / 
+        <span th:text="${totalCount}">10</span> 問 正解でした！
+    </h2>
+    <hr>
+	<a th:href="@{/quiz/choice/play10}">リプレイ</a>
+	<a th:href="@{/quiz/choice}">CRUD画面へ</a>
+</body>
+</html>

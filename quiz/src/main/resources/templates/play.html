@@ -3,21 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <title>「◯✕クイズ」アプリ：PLAY</title>
+<style>
+    .question-card {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background-color: #fcfcfc;
+        max-width: 600px;
+    }
+    .q-number {
+        font-weight: bold;
+        color: #007bff;
+        margin-right: 5px;
+    }
+    
+    button {
+        font-size: 1.5em;      
+        font-weight: bold;    
+        width: 100px;         
+        height: 50px;          
+        margin-right: 15px;
+        cursor: pointer;
+        
+        border: 1px solid #999;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: background-color 0.2s;
+    }
+    button:hover {
+        background-color: #e6f2ff; 
+    }
+</style>
 </head>
 <body>
-	<h1>「◯✕クイズ」アプリ：PLAY</h1>
-	<h3>クイズ</h3>
+	<h1>「◯✕クイズ」</h1>
+	<h3>プレイ画面</h3>
+	
 	<th:block th:if="${msg}">
 		<p th:text="${msg}" style="color:red"></p>
-		<a th:href="@{/quiz/}">CRUD画面へ</a>
+		<a th:href="@{/quiz}">CRUD画面へ</a>
 	</th:block>
+	
 	<th:block th:unless="${msg}">
-		<p th:text="${quizForm.question}">クイズ内容</p>
-		<form th:action="@{/quiz/check}" th:object="${quizForm}" method="POST">
-			<input type="hidden" th:field="*{id}">
-			<button name="answer" value="true">◯</button>
-			<button name="answer" value="false">✕</button>
-		</form>
+		<div class="question-card">
+			<p>
+				<span class="q-number">Q.</span>
+				<span th:text="${quizForm.question}">クイズ内容</span>
+			</p>
+			
+			<form th:action="@{/quiz/check}" th:object="${quizForm}" method="POST">
+				<input type="hidden" th:field="*{id}">
+				<button name="answer" value="true" style="color: blue;">⭕</button>
+				<button name="answer" value="false" style="color: red;">❌</button>
+			</form>
+		</div>
 	</th:block>
 </body>
 </html>

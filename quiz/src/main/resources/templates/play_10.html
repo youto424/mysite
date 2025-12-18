@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>4択クイズ：10問連続モード</title>
+    <style>
+        .question-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 30px; /* カードごとの間隔を少し広めに */
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            max-width: 600px;
+        }
+        .q-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 5px;
+            font-size: 1.1em;
+        }
+        
+        /* 選択肢をブロック状にして押しやすくするスタイル */
+        .choice-block {
+            display: block;          /* 横いっぱいに広げる */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px 15px;      /* 余白 */
+            margin-bottom: 8px;      /* 選択肢同士の間隔 */
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .choice-block:hover {
+            background-color: #e6f2ff; /* マウスを乗せた時の色 */
+        }
+        
+        /* ラジオボタン本体の見た目 */
+        input[type="radio"] {
+            transform: scale(1.2);
+            margin-right: 10px;
+        }
+
+        /* 採点ボタンのデザイン */
+        .submit-btn {
+            padding: 15px 40px; 
+            font-size: 1.2em; 
+            font-weight: bold;
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer;
+            display: block;
+            margin: 20px 0 40px 0; /* 下に少し余白 */
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 10問連続チャレンジ🔥</h1>
+    <p>全問正解目指して頑張ってください！</p>
+    
+    <form method="post" th:action="@{/quiz/choice/check10}" th:object="${quizPlayForm}">
+        
+        <div th:each="quizItem, stat : *{quizList}" class="question-card">
+            
+            <input type="hidden" th:field="*{quizList[__${stat.index}__].id}">
+            <input type="hidden" th:field="*{quizList[__${stat.index}__].answer}"> 
+            
+            <p style="margin-top: 0; font-weight: bold;">
+                <span class="q-number" th:text="'Q' + ${stat.count}">Q1</span>
+                <span th:text="${quizItem.question}">問題文</span>
+            </p>
+
+            <label class="choice-block">
+                <input type="radio" value="1" th:field="*{quizList[__${stat.index}__].myAnswer}" required>
+                <span th:text="${quizItem.choice1}">選択肢1</span>
+            </label>
+
+            <label class="choice-block">
+                <input type="radio" value="2" th:field="*{quizList[__${stat.index}__].myAnswer}">
+                <span th:text="${quizItem.choice2}">選択肢2</span>
+            </label>
+
+            <label class="choice-block">
+                <input type="radio" value="3" th:field="*{quizList[__${stat.index}__].myAnswer}">
+                <span th:text="${quizItem.choice3}">選択肢3</span>
+            </label>
+
+            <label class="choice-block">
+                <input type="radio" value="4" th:field="*{quizList[__${stat.index}__].myAnswer}">
+                <span th:text="${quizItem.choice4}">選択肢4</span>
+            </label>
+        </div>
+
+        <button type="submit" class="submit-btn">採点する！</button>
+    </form>
+</body>
+</html>

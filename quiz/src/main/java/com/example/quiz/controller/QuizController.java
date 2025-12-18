@@ -1,5 +1,8 @@
 package com.example.quiz.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.quiz.entity.Quiz;
+import com.example.quiz.form.QuizBooleanExchangeForm;
+import com.example.quiz.form.QuizBooleanPlayForm;
 import com.example.quiz.form.QuizForm;
 import com.example.quiz.service.QuizService;
 
@@ -170,4 +176,60 @@ public class QuizController {
 			}
 		return "answer";
 	}
+		/** CSVインポート処理 */
+		@PostMapping("/csv")
+		public String csvImport(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+			try {
+				service.importCsv(file);
+				redirectAttributes.addFlashAttribute("complete", "CSVインポートが完了しました");
+			} catch (IOException e) {
+				e.printStackTrace();
+				redirectAttributes.addFlashAttribute("msg", "CSVの読み込みに失敗しました");
+			}
+			return "redirect:/quiz";
+		}
+
+		/** 10問連続プレイ画面の表示 */
+		@GetMapping("/play10")
+		public String showPlay10(Model model) {
+			// 1. 10件ランダムに取得
+			Iterable<Quiz> quizzes = service.selectRandomQuizzes(10);
+			
+			// 2. Formのリストに詰め替える
+			QuizBooleanPlayForm playForm = new QuizBooleanPlayForm();
+			List<QuizBooleanExchangeForm> exchangeList = new ArrayList<>();
+			
+			for (Quiz quiz : quizzes) {
+				QuizBooleanExchangeForm exchangeForm = new QuizBooleanExchangeForm();
+				exchangeForm.setId(quiz.getId());
+				exchangeForm.setQuestion(quiz.getQuestion());
+				exchangeForm.setAnswer(quiz.getAnswer());
+				// myAnswerはnullのまま
+				exchangeList.add(exchangeForm);
+			}
+			
+			playForm.setQuizList(exchangeList);
+			model.addAttribute("quizBooleanPlayForm", playForm);
+			
+			return "play_boolean_10"; 
+		}
+
+		/** 10問連続プレイの答え合わせ */
+		@PostMapping("/check10")
+		public String checkPlay10(@ModelAttribute QuizBooleanPlayForm quizBooleanPlayForm, Model model) {
+			int correctCount = 0;
+			int totalCount = quizBooleanPlayForm.getQuizList().size();
+			
+			for (QuizBooleanExchangeForm form : quizBooleanPlayForm.getQuizList()) {
+				// ◯×クイズなのでBoolean同士を比較
+				if (form.getAnswer().equals(form.getMyAnswer())) {
+					correctCount++;
+				}
+			}
+			
+			model.addAttribute("correctCount", correctCount);
+			model.addAttribute("totalCount", totalCount);
+			
+			return "answer_boolean_10"; 
+		}
 }
