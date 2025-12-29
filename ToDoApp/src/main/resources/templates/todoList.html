@@ -67,23 +67,23 @@
         </tbody>
     </table>
 
-    <div class="button-area">
-        <a href="/?mode=today">
-            <button>今日のタスクのみ表示</button>
-        </a>
+	<div class="button-area">
+	    <a th:href="@{/todo(mode='today')}">
+	        <button>今日のタスクのみ表示</button>
+	    </a>
 
-        <a href="/?mode=sort">
-            <button>期限が短い順でソート</button>
-        </a>
-        
-        <a href="/">
-             <button style="background-color: lightgray;">リスト一覧</button>
-        </a>
+	    <a th:href="@{/todo(mode='sort')}">
+	        <button>期限が短い順でソート</button>
+	    </a>
+	    
+	    <a th:href="@{/todo}">
+	         <button style="background-color: lightgray;">リスト一覧</button>
+	    </a>
 
-        <a href="/add" style="margin-left: auto;">
-            <button>タスク追加</button>
-        </a>
-    </div>
+	    <a th:href="@{/add}" style="margin-left: auto;">
+	        <button>タスク追加</button>
+	    </a>
+	</div>
 
 </body>
 </html>

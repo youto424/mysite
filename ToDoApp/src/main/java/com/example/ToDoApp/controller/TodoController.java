@@ -22,7 +22,7 @@ public class TodoController {
     }
 
     // 一覧表示（検索・ソート機能付き）
-    @GetMapping("/")
+    @GetMapping("/todo")
     public String index(Model model, 
                         @RequestParam(name = "mode", required = false) String mode) {
         List<Task> taskList;
@@ -59,14 +59,14 @@ public class TodoController {
         newTask.setCreatedAt(LocalDate.now());
         
         taskRepository.save(newTask);
-        return "redirect:/";
+        return "redirect:/todo";
     }
 
     // タスク削除処理
     @PostMapping("/delete")
     public String deleteTask(@RequestParam Integer id) {
         taskRepository.deleteById(id);
-        return "redirect:/";
+        return "redirect:/todo";
     }
     
     // タスク完了処理
@@ -75,6 +75,6 @@ public class TodoController {
         Task task = taskRepository.findById(id).get();
         task.setIsCompleted(true);
         taskRepository.save(task);
-        return "redirect:/";
+        return "redirect:/todo";
     }
 }
